@@ -8,7 +8,7 @@ from time import sleep
 
 from threading import Condition, Event, Thread
 
-
+from os.path import exists
 
 class AutoReconnectMachine:
     """Listen to the machine state and try to automatically
@@ -40,7 +40,7 @@ class AutoReconnectMachine:
                 # wait until notified
                 self._wait()
             if self._engine.machine_state == STATE_ERROR:
-                if isinstance(self._engine._machine, SerialStenotypeBase) and not self._port_exists(self._engine._machine.serial_params['port']):
+                if isinstance(self._engine._machine, SerialStenotypeBase) and not exists(self._engine._machine.serial_params['port']):
                     log.info('plover-auto-reconnect-machine: machine can not be reconnected, retrying later')
                 else:
                     log.info('plover-auto-reconnect-machine: machine is disconnected, trying to reconnect')
